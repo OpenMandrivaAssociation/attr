@@ -1,6 +1,6 @@
 %define	name	attr
-%define	version	2.4.38
-%define	release	%mkrel 4
+%define	version	2.4.39
+%define	release	%mkrel 1
 
 %define	lib_name_orig	lib%{name}
 %define	lib_major	1
@@ -10,7 +10,7 @@ Summary:	Utility for managing filesystem extended attributes
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}-1.tar.bz2
+Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}.tar.bz2
 License:	GPL
 Group:		System/Kernel and hardware
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot

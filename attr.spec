@@ -13,7 +13,6 @@ Release:	%{release}
 Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}.tar.bz2
 License:	GPL
 Group:		System/Kernel and hardware
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	libtool
 URL:		http://oss.sgi.com/projects/xfs/
 

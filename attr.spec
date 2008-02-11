@@ -1,5 +1,6 @@
 %define	name	attr
-%define	version	2.4.39
+%define	version	2.4.41
+%define minor_version 1
 %define	release	%mkrel 1
 
 %define	lib_name_orig	lib%{name}
@@ -10,8 +11,8 @@ Summary:	Utility for managing filesystem extended attributes
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}.tar.bz2
-License:	GPL
+Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}-%{minor_version}.tar.gz
+License:	GPLv2
 Group:		System/Kernel and hardware
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	libtool
@@ -85,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc doc/CHANGES.gz README doc/ea-conv
+%doc doc/CHANGES.gz README 
 %{_bindir}/*
 %{_mandir}/man1/*
 

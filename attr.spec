@@ -1,7 +1,7 @@
 %define	name	attr
 %define	version	2.4.41
 %define minor_version 1
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 %define	lib_name_orig	lib%{name}
 %define	lib_major	1

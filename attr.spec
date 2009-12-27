@@ -1,7 +1,7 @@
 %define	name	attr
-%define	version	2.4.43
+%define	version	2.4.44
 %define minor_version 1
-%define	release	%mkrel 3
+%define	release	%mkrel 1
 
 %define	lib_name_orig	lib%{name}
 %define	lib_major	1
@@ -11,12 +11,11 @@ Summary:	Utility for managing filesystem extended attributes
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-Source0:	ftp://oss.sgi.com/projects/xfs/download/cmd_tars/%{name}_%{version}-%{minor_version}.tar.gz
+Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 License:	GPLv2
 Group:		System/Kernel and hardware
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	libtool
-URL:		http://oss.sgi.com/projects/xfs/
+URL:		http://savannah.nongnu.org/projects/attr
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -60,7 +59,6 @@ then you'll also want to install attr.
 %setup -q
 
 %build
-aclocal && autoconf
 %configure2_5x --libdir=/%{_lib}
 %make
 

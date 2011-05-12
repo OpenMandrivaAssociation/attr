@@ -1,21 +1,17 @@
-%define	name	attr
-%define	version	2.4.44
-%define minor_version 1
-%define	release	%mkrel 3
-
 %define	lib_name_orig	lib%{name}
 %define	lib_major	1
 %define	lib_name 	%mklibname %{name} %{lib_major}
 
 Summary:	Utility for managing filesystem extended attributes
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		attr
+Version:	2.4.46
+Release:	%mkrel 1
+URL:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
+Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
 License:	GPLv2
 Group:		System/Kernel and hardware
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-URL:		http://savannah.nongnu.org/projects/attr
 
 %description
 A set of tools for manipulating extended attributes on filesystem

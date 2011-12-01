@@ -59,21 +59,21 @@ then you'll also want to install attr.
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 make install DIST_ROOT=%{buildroot}/
 make install-dev DIST_ROOT=%{buildroot}/
 make install-lib DIST_ROOT=%{buildroot}/
 # fix conflict with man-pages-1.56
-rm -fr $RPM_BUILD_ROOT{%_mandir/man2,%_datadir/doc}
+rm -fr %{buildroot}{%_mandir/man2,%_datadir/doc}
 
 # Remove unpackaged symlinks
-rm -fr $RPM_BUILD_ROOT/%{_lib}/libattr.{a,la} \
- $RPM_BUILD_ROOT/%{_libdir}/libattr.la
+rm -fr %{buildroot}/%{_lib}/libattr.{a,la} \
+ %{buildroot}/%{_libdir}/libattr.la
 
 %find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %if %mdkversion < 200900
 %post -n %{lib_name} -p /sbin/ldconfig

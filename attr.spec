@@ -49,6 +49,7 @@ then you'll also want to install attr.
 
 %prep
 %setup -q
+chmod +r -R .
 
 %build
 %configure2_5x --libdir=/%{_lib}

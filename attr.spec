@@ -63,7 +63,7 @@ make install-lib DIST_ROOT=%{buildroot}/
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
-rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}%{_libdir}/libattr.la
+rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so} %{buildroot}%{_libdir}/libattr.la
 
 %find_lang %{name}
 
@@ -79,7 +79,6 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}*
 
 %files -n %{devname}
 %doc doc/CHANGES.gz README
-/%{_lib}/*.so
 %{_libdir}/*.so
 %{_libdir}/*a
 %{_mandir}/man3/*

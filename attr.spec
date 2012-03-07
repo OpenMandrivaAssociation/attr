@@ -1,4 +1,3 @@
-%define	lib_name_orig	lib%{name}
 %define	major	1
 %define	libname	%mklibname %{name} %{major}
 %define	devname	%mklibname -d %{name}
@@ -22,7 +21,6 @@ with the SGI IRIX tool of the same name.
 %package -n	%{libname}
 Summary:	Main library for %{lib_name_orig}
 Group:		System/Libraries
-Provides:	%{lib_name_orig} = %{version}-%{release}
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
@@ -32,7 +30,6 @@ linked with %{lib_name_orig}.
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
 Requires:	%{libname} = %{version}
-Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 Provides:	attr-devel = %{version}-%{release}
 Obsoletes:	attr-devel
 

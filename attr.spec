@@ -31,7 +31,6 @@ Summary:	Extended attribute static libraries and headers
 Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	attr-devel = %{version}-%{release}
-Obsoletes:	attr-devel
 
 %description -n	%{devname}
 This package contains the libraries and header files needed to

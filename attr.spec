@@ -68,7 +68,7 @@ rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}%{_libdir}/libattr.la
 
 
 %files -f %{name}.lang
-%doc doc/CHANGES.gz README 
+%doc README 
 %{_bindir}/*
 %{_mandir}/man1/*
 

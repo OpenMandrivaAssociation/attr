@@ -19,12 +19,12 @@ An attr(1) command is also provided which is largely compatible
 with the SGI IRIX tool of the same name.
 
 %package -n	%{libname}
-Summary:	Main library for %{lib_name_orig}
+Summary:	Main library for libattr
 Group:		System/Libraries
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
-linked with %{lib_name_orig}.
+linked with libattr.
 
 %package -n	%{devname}
 Summary:	Extended attribute static libraries and headers

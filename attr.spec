@@ -67,6 +67,7 @@ rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}%{_libdir}/libattr.la
 
 %find_lang %{name}
 
+chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}*
 
 %files -f %{name}.lang
 %doc README 

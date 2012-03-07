@@ -59,10 +59,10 @@ make install DIST_ROOT=%{buildroot}/
 make install-dev DIST_ROOT=%{buildroot}/
 make install-lib DIST_ROOT=%{buildroot}/
 # fix conflict with man-pages-1.56
-rm -rf %{buildroot}{%_mandir/man2,%_datadir/doc}
+rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
-rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}/%{_libdir}/libattr.la
+rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}%{_libdir}/libattr.la
 
 %find_lang %{name}
 

@@ -73,11 +73,10 @@ rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}%{_libdir}/libattr.la
 %{_mandir}/man1/*
 
 %files -n %{libname}
-%doc doc/COPYING
 /%{_lib}/libattr.so.%{major}*
 
 %files -n %{devname}
-%doc doc/CHANGES.gz doc/COPYING README
+%doc doc/CHANGES.gz README
 /%{_lib}/*.so
 %{_libdir}/*.so
 %{_libdir}/*a

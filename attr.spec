@@ -29,8 +29,8 @@ linked with %{lib_name_orig}.
 %package -n	%{devname}
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
-Requires:	%{libname} = %{version}
-Provides:	attr-devel = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Provides:	attr-devel = %{EVRD}
 
 %description -n	%{devname}
 This package contains the libraries and header files needed to

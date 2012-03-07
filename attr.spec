@@ -1,17 +1,17 @@
 %define	lib_name_orig	lib%{name}
-%define	lib_major	1
-%define	lib_name 	%mklibname %{name} %{lib_major}
+%define	major	1
+%define	libname	%mklibname %{name} %{major}
+%define	devname	%mklibname -d %{name}
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.46
-Release:	%mkrel 1
+Release:	2
 URL:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
 License:	GPLv2
 Group:		System/Kernel and hardware
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -19,24 +19,24 @@ objects, in particular getfattr(1) and setfattr(1).
 An attr(1) command is also provided which is largely compatible
 with the SGI IRIX tool of the same name.
 
-%package -n	%{lib_name}
+%package -n	%{libname}
 Summary:	Main library for %{lib_name_orig}
 Group:		System/Libraries
 Provides:	%{lib_name_orig} = %{version}-%{release}
 
-%description -n	%{lib_name}
+%description -n	%{libname}
 This package contains the library needed to run programs dynamically
 linked with %{lib_name_orig}.
 
-%package -n	%{lib_name}-devel
+%package -n	%{devname}
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
-Requires:	%{lib_name} = %{version}
+Requires:	%{libname} = %{version}
 Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 Provides:	attr-devel = %{version}-%{release}
 Obsoletes:	attr-devel
 
-%description -n	%{lib_name}-devel
+%description -n	%{devname}
 This package contains the libraries and header files needed to
 develop programs which make use of extended attributes.
 For Linux programs, the documented system call API is the
@@ -59,42 +59,28 @@ then you'll also want to install attr.
 %make
 
 %install
-rm -rf %{buildroot}
 make install DIST_ROOT=%{buildroot}/
 make install-dev DIST_ROOT=%{buildroot}/
 make install-lib DIST_ROOT=%{buildroot}/
 # fix conflict with man-pages-1.56
-rm -fr %{buildroot}{%_mandir/man2,%_datadir/doc}
+rm -rf %{buildroot}{%_mandir/man2,%_datadir/doc}
 
 # Remove unpackaged symlinks
-rm -fr %{buildroot}/%{_lib}/libattr.{a,la} \
- %{buildroot}/%{_libdir}/libattr.la
+rm -rf %{buildroot}/%{_lib}/libattr.{a,la} %{buildroot}/%{_libdir}/libattr.la
 
 %find_lang %{name}
 
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -n %{lib_name} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %{lib_name} -p /sbin/ldconfig
-%endif
 
 %files -f %{name}.lang
-%defattr(-,root,root)
 %doc doc/CHANGES.gz README 
 %{_bindir}/*
 %{_mandir}/man1/*
 
-%files -n %{lib_name}
-%defattr(-,root,root)
+%files -n %{libname}
 %doc doc/COPYING
-/%{_lib}/*.so.*
+/%{_lib}/libattr.so.%{major}*
 
-%files -n %{lib_name}-devel
-%defattr(-,root,root)
+%files -n %{devname}
 %doc doc/CHANGES.gz doc/COPYING README
 /%{_lib}/*.so
 %{_libdir}/*.so

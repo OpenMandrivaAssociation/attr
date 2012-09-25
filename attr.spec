@@ -47,6 +47,7 @@ Requires:	%{libname} = %{EVRD}
 Requires:	uclibc-%{libname} = %{EVRD}
 %endif
 Provides:	attr-devel = %{EVRD}
+%rename		%{_lib}attr1-devel
 
 %description -n	%{devname}
 This package contains the libraries and header files needed to

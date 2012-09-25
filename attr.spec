@@ -93,7 +93,7 @@ popd
 %endif
 
 pushd .system
-%configure2_5x	OPTIMIZER="%{optflags}" \
+%configure2_5x	OPTIMIZER="%{optflags} -Os" \
 		--libdir=/%{_lib}
 %make
 popd

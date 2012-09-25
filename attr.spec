@@ -111,7 +111,13 @@ make -C .system install-lib DIST_ROOT=%{buildroot}/
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
+# TOdO: finish up spec-helper script ot automatically deal with
 rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so}
+ln -srf %{buildroot}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
+%if %{with uclibc}
+install -d %{buildroot}%{uclibc_root}%{_libdir}
+ln -srf %{buildroot}/%{uclibc_root}%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
+%endif
 
 %find_lang %{name}
 
@@ -132,9 +138,8 @@ rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so}
 %doc .system/doc/CHANGES.gz README
 %{_libdir}/libattr.so
 %{_libdir}/libattr.a
-%if %{with uclic}
+%if %{with uclibc}
 %{uclibc_root}%{_libdir}/libattr.so
-%{uclibc_root}%{_libdir}/libattr.a
 %endif
 %{_mandir}/man3/*
 %{_mandir}/man5/*

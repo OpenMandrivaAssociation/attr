@@ -85,8 +85,13 @@ popd
 pushd .uclibc
 %configure2_5x	CC=%{uclibc_cc} \
 		OPTIMIZER="%{uclibc_cflags}" \
+		--prefix=%{uclibc_root} \
+		--exec-prefix=%{uclibc_root} \
 		--libdir=%{uclibc_root}/%{_lib} \
-		--enable-gettext
+		--enable-static \
+		--enable-shared \
+		--enable-gettext \
+		--with-sysroot=%{uclibc_root}
 # gettext isn't provided by uClibc, se we need to explicitly link against
 # libintl
 %make LTLIBS=-lintl
@@ -95,6 +100,7 @@ popd
 
 pushd .system
 %configure2_5x	OPTIMIZER="%{optflags} -Os" \
+		--disable-static \
 		--libdir=/%{_lib}
 %make
 popd
@@ -102,23 +108,24 @@ popd
 %install
 %if %{with uclibc}
 make -C .uclibc install-lib DIST_ROOT=%{buildroot}
+make -C .uclibc install-dev DIST_ROOT=%{buildroot}
+install -d %{buildroot}%{uclibc_root}%{_libdir}
+rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
+ln -sr %{buildroot}/%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
+mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
 %endif
 
-make -C .system install DIST_ROOT=%{buildroot}/
-make -C .system install-dev DIST_ROOT=%{buildroot}/
-make -C .system install-lib DIST_ROOT=%{buildroot}/
+make -C .system install DIST_ROOT=%{buildroot}
+make -C .system install-dev DIST_ROOT=%{buildroot}
+make -C .system install-lib DIST_ROOT=%{buildroot}
 
 # fix conflict with man-pages-1.56
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
 # TOdO: finish up spec-helper script ot automatically deal with
-rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so}
+rm %{buildroot}/%{_lib}/libattr.{a,la,so} %{buildroot}%{_libdir}/libattr.so
 ln -srf %{buildroot}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
-%if %{with uclibc}
-install -d %{buildroot}%{uclibc_root}%{_libdir}
-ln -srf %{buildroot}/%{uclibc_root}%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
-%endif
 
 %find_lang %{name}
 
@@ -138,8 +145,8 @@ ln -srf %{buildroot}/%{uclibc_root}%{_lib}/libattr.so.%{major}.* %{buildroot}%{u
 %files -n %{devname}
 %doc .system/doc/CHANGES.gz README
 %{_libdir}/libattr.so
-%{_libdir}/libattr.a
 %if %{with uclibc}
+%{uclibc_root}%{_libdir}/libattr.a
 %{uclibc_root}%{_libdir}/libattr.so
 %endif
 %{_mandir}/man3/*

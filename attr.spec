@@ -2,15 +2,20 @@
 %define	libname	%mklibname %{name} %{major}
 %define	devname	%mklibname -d %{name}
 
+%bcond_without	uclibc
+
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.46
-Release:	2
+Release:	3
 URL:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
 License:	GPLv2
 Group:		System/Kernel and hardware
+%if %{with uclibc}
+BuildRequires:	uClibc-devel >= 0.9.33.2-9
+%endif
 
 %description
 A set of tools for manipulating extended attributes on filesystem
@@ -26,10 +31,21 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with libattr.
 
+%package -n	uclibc-%{libname}
+Summary:	Main library for libattr (uClibc linked)
+Group:		System/Libraries
+
+%description -n	uclibc-%{libname}
+This package contains the library needed to run programs dynamically
+linked with libattr.
+
 %package -n	%{devname}
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
+%if %{with uclibc}
+Requires:	uclibc-%{libname} = %{EVRD}
+%endif
 Provides:	attr-devel = %{EVRD}
 
 %description -n	%{devname}
@@ -49,25 +65,55 @@ then you'll also want to install attr.
 
 %prep
 %setup -q
-chmod +r -R .
+chmod +rw -R .
+
+%if %{with uclibc}
+mkdir .uclibc
+pushd .uclibc
+cp -a ../* .
+popd
+%endif
+
+mkdir .system
+pushd .system
+cp -a ../* .
+popd
 
 %build
-%configure2_5x --libdir=/%{_lib}
+%if %{with uclibc}
+pushd .uclibc
+%configure2_5x	CC=%{uclibc_cc} \
+		OPTIMIZER="%{uclibc_cflags}" \
+		--libdir=%{uclibc_root}/%{_lib} \
+		--enable-gettext
+# gettext isn't provided by uClibc, se we need to explicitly link against
+# libintl
+%make LTLIBS=-lintl
+popd
+%endif
+
+pushd .system
+%configure2_5x	OPTIMIZER="%{optflags}" \
+		--libdir=/%{_lib}
 %make
+popd
 
 %install
-make install DIST_ROOT=%{buildroot}/
-make install-dev DIST_ROOT=%{buildroot}/
-make install-lib DIST_ROOT=%{buildroot}/
+%if %{with uclibc}
+make -C .uclibc install-lib DIST_ROOT=%{buildroot}
+%endif
+
+make -C .system install DIST_ROOT=%{buildroot}/
+make -C .system install-dev DIST_ROOT=%{buildroot}/
+make -C .system install-lib DIST_ROOT=%{buildroot}/
+
 # fix conflict with man-pages-1.56
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
-rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so} %{buildroot}%{_libdir}/libattr.la
+rm -rf %{buildroot}/%{_lib}/libattr.{a,la,so}
 
 %find_lang %{name}
-
-chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}*
 
 %files -f %{name}.lang
 %doc README 
@@ -75,15 +121,22 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}*
 %{_mandir}/man1/*
 
 %files -n %{libname}
-/%{_lib}/libattr.so.%{major}*
+%attr(755,root,root) /%{_lib}/libattr.so.%{major}*
+
+%if %{with uclibc}
+%files -n uclibc-%{libname}
+%attr(755,root,root) %{uclibc_root}/%{_lib}/libattr.so.%{major}*
+%endif
 
 %files -n %{devname}
-%doc doc/CHANGES.gz README
-%{_libdir}/*.so
-%{_libdir}/*a
+%doc .system/doc/CHANGES.gz README
+%{_libdir}/libattr.so
+%{_libdir}/libattr.a
+%if %{with uclic}
+%{uclibc_root}%{_libdir}/libattr.so
+%{uclibc_root}%{_libdir}/libattr.a
+%endif
 %{_mandir}/man3/*
 %{_mandir}/man5/*
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*
-
-

@@ -109,7 +109,8 @@ make -C .uclibc install-lib DIST_ROOT=%{buildroot}
 make -C .uclibc install-dev DIST_ROOT=%{buildroot}
 install -d %{buildroot}%{uclibc_root}%{_libdir}
 rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
-ln -sr %{buildroot}/%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
+ln -sr %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
+chmod +x %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.*
 mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
 rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
@@ -125,6 +126,7 @@ rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 # TOdO: finish up spec-helper script ot automatically deal with
 rm %{buildroot}/%{_lib}/libattr.{a,la,so} %{buildroot}%{_libdir}/libattr.so
 ln -srf %{buildroot}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
+chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 
 %find_lang %{name}
 

@@ -83,7 +83,7 @@ popd
 %build
 %if %{with uclibc}
 pushd .uclibc
-%uclibc_configure \
+%configure2_5x	CC=%{uclibc_cc} \
 		OPTIMIZER="%{uclibc_cflags}" \
 		--prefix=%{uclibc_root} \
 		--exec-prefix=%{uclibc_root} \
@@ -112,7 +112,6 @@ rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
 ln -sr %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
 chmod +x %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.*
 mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
-rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
 
 make -C .system install DIST_ROOT=%{buildroot}

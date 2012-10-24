@@ -14,7 +14,7 @@ Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.si
 License:	GPLv2
 Group:		System/Kernel and hardware
 %if %{with uclibc}
-BuildRequires:	uClibc-devel >= 0.9.33.2-9
+BuildRequires:	uClibc-devel >= 0.9.33.2-14
 %endif
 
 %description
@@ -83,7 +83,7 @@ popd
 %build
 %if %{with uclibc}
 pushd .uclibc
-%configure2_5x	CC=%{uclibc_cc} \
+%uclibc_configure \
 		OPTIMIZER="%{uclibc_cflags}" \
 		--prefix=%{uclibc_root} \
 		--exec-prefix=%{uclibc_root} \
@@ -92,9 +92,7 @@ pushd .uclibc
 		--enable-shared \
 		--enable-gettext \
 		--with-sysroot=%{uclibc_root}
-# gettext isn't provided by uClibc, se we need to explicitly link against
-# libintl
-%make LTLIBS=-lintl
+%make
 popd
 %endif
 
@@ -113,6 +111,7 @@ install -d %{buildroot}%{uclibc_root}%{_libdir}
 rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
 ln -sr %{buildroot}/%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
 mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
+rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
 
 make -C .system install DIST_ROOT=%{buildroot}

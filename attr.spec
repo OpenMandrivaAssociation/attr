@@ -14,7 +14,7 @@ Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.si
 License:	GPLv2
 Group:		System/Kernel and hardware
 %if %{with uclibc}
-BuildRequires:	uClibc-devel >= 0.9.33.2-14
+BuildRequires:	uClibc-devel >= 0.9.33.2-16
 %endif
 
 %description
@@ -83,7 +83,7 @@ popd
 %build
 %if %{with uclibc}
 pushd .uclibc
-%configure2_5x	CC=%{uclibc_cc} \
+%uclibc_configure \
 		OPTIMIZER="%{uclibc_cflags}" \
 		--prefix=%{uclibc_root} \
 		--exec-prefix=%{uclibc_root} \
@@ -109,6 +109,7 @@ make -C .uclibc install-lib DIST_ROOT=%{buildroot}
 make -C .uclibc install-dev DIST_ROOT=%{buildroot}
 install -d %{buildroot}%{uclibc_root}%{_libdir}
 rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
+rm -r %{buildroot}%{uclibc_root}%{_bindir}
 ln -sr %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
 chmod +x %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.*
 mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a

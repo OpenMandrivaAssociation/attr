@@ -8,7 +8,6 @@ Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.46
 Release:	3.1
-ExclusiveArch:	%{ix86}
 URL:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig

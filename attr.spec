@@ -13,6 +13,7 @@ Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
 License:	GPLv2
 Group:		System/Kernel and hardware
+BuildRequires:	gettext-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
 %endif

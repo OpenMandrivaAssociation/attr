@@ -7,7 +7,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.46
-Release:	4
+Release:	5
 URL:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
@@ -92,6 +92,7 @@ pushd .uclibc
 		--enable-shared \
 		--enable-gettext \
 		--with-sysroot=%{uclibc_root}
+sed -i -e 's,^LOADERFLAGS =,LOADERFLAGS = -lintl,' include/builddefs
 %make
 popd
 %endif

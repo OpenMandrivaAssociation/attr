@@ -13,6 +13,7 @@ Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
+Patch0:		attr-aarch64.patch
 BuildRequires:	gettext-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
@@ -59,6 +60,7 @@ is also provided.
 
 %prep
 %setup -q
+%patch0 -p1
 chmod +rw -R .
 
 %if %{with uclibc}

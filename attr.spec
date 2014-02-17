@@ -6,14 +6,13 @@
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
-Version:	2.4.46
-Release:	13
+Version:	2.4.47
+Release:	1
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
-Patch0:		attr-aarch64.patch
 BuildRequires:	gettext-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
@@ -60,7 +59,6 @@ is also provided.
 
 %prep
 %setup -q
-%patch0 -p1
 chmod +rw -R .
 
 %if %{with uclibc}
@@ -105,11 +103,11 @@ popd
 make -C .uclibc install-lib DIST_ROOT=%{buildroot}
 make -C .uclibc install-dev DIST_ROOT=%{buildroot}
 install -d %{buildroot}%{uclibc_root}%{_libdir}
-rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{a,la,so}
+rm %{buildroot}%{uclibc_root}/%{_lib}/libattr.{la,so}
 rm -r %{buildroot}%{uclibc_root}%{_bindir}
 ln -sr %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/libattr.so
 chmod +x %{buildroot}%{uclibc_root}/%{_lib}/libattr.so.%{major}.*
-mv %{buildroot}%{_libdir}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
+mv %{buildroot}%{uclibc_root}/%{_lib}/libattr.a %{buildroot}%{uclibc_root}%{_libdir}/libattr.a
 %endif
 
 make -C .system install DIST_ROOT=%{buildroot}
@@ -120,9 +118,10 @@ make -C .system install-lib DIST_ROOT=%{buildroot}
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
-# TOdO: finish up spec-helper script ot automatically deal with
-rm %{buildroot}/%{_lib}/libattr.{a,la,so} %{buildroot}%{_libdir}/libattr.so
-ln -srf %{buildroot}/%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
+# TODO: finish up spec-helper script ot automatically deal with
+rm -f %{buildroot}/%{_lib}/libattr.{a,la,so}
+mkdir -p %{buildroot}%{_libdir}
+ln -sf /%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
 chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 
 %find_lang %{name}

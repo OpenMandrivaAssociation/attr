@@ -44,9 +44,6 @@ linked with libattr.
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
-%if %{with uclibc}
-Requires:	uclibc-%{libname} = %{EVRD}
-%endif
 Provides:	%{name}-devel = %{EVRD}
 %rename		%{_lib}attr1-devel
 

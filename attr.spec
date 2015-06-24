@@ -12,11 +12,11 @@ License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
-Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
-Source2:	%{name}.rpmlintrc
+Source1:	%{name}.rpmlintrc
 BuildRequires:	gettext-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
+BuildRequires:	uclibc-gettext-devel
 %endif
 
 %description

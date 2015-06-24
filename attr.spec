@@ -7,12 +7,13 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.47
-Release:	4
+Release:	5
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
 Source1:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz.sig
+Source2:	%{name}.rpmlintrc
 BuildRequires:	gettext-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
@@ -32,6 +33,7 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with libattr.
 
+%if %{with uclibc}
 %package -n	uclibc-%{libname}
 Summary:	Main library for libattr (uClibc linked)
 Group:		System/Libraries
@@ -39,6 +41,22 @@ Group:		System/Libraries
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
 linked with libattr.
+
+%package -n	uclibc-%{devname}
+Summary:	Extended attribute static libraries and headers
+Group:		Development/C
+Requires:	uclibc-%{libname} = %{EVRD}
+Requires:	%{devname} = %{EVRD}
+Provides:	uclibc-%{name}-devel = %{EVRD}
+Conflicts:	%{devname} < 2.4.47-5
+
+%description -n	uclibc-%{devname}
+This package contains the libraries and header files needed to
+develop programs which make use of extended attributes.
+For Linux programs, the documented system call API is the
+recommended interface, but an SGI IRIX compatibility interface
+is also provided.
+%endif
 
 %package -n	%{devname}
 Summary:	Extended attribute static libraries and headers
@@ -88,8 +106,8 @@ popd
 %endif
 
 pushd .system
-%configure2_5x \
-	OPTIMIZER="%{optflags} -Os" \
+%configure \
+	OPTIMIZER="%{optflags}" \
 	--disable-static \
 	--libdir=/%{_lib}
 %make
@@ -134,15 +152,15 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 %if %{with uclibc}
 %files -n uclibc-%{libname}
 %{uclibc_root}/%{_lib}/libattr.so.%{major}*
+
+%files -n uclibc-%{devname}
+%{uclibc_root}%{_libdir}/libattr.a
+%{uclibc_root}%{_libdir}/libattr.so
 %endif
 
 %files -n %{devname}
 %doc .system/doc/CHANGES.gz README
 %{_libdir}/libattr.so
-%if %{with uclibc}
-%{uclibc_root}%{_libdir}/libattr.a
-%{uclibc_root}%{_libdir}/libattr.so
-%endif
 %{_mandir}/man3/*
 %{_mandir}/man5/*
 %dir %{_includedir}/%{name}

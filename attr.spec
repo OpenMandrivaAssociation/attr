@@ -2,12 +2,12 @@
 %define	libname	%mklibname %{name} %{major}
 %define	devname	%mklibname -d %{name}
 
-%bcond_without	uclibc
+%bcond_with	uclibc
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.47
-Release:	6
+Release:	7
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr

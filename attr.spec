@@ -78,7 +78,7 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 /%{_lib}/libattr.so.%{major}*
 
 %files -n %{devname}
-%doc .system/doc/CHANGES.gz README
+%doc README
 %{_libdir}/libattr.so
 %{_mandir}/man3/*
 %{_mandir}/man5/*

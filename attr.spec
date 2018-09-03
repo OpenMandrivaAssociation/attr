@@ -4,12 +4,12 @@
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
-Version:	2.4.47
-Release:	8
+Version:	2.4.48
+Release:	1
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
-Source0:	http://mirrors.aixtools.net/sv/%{name}/%{name}-%{version}.src.tar.gz
+Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 BuildRequires:	gettext-devel
 
@@ -54,9 +54,7 @@ chmod +rw -R .
 %make
 
 %install
-make install DIST_ROOT=%{buildroot}
-make install-dev DIST_ROOT=%{buildroot}
-make install-lib DIST_ROOT=%{buildroot}
+%make_install DESTDIR=%{buildroot}
 
 # fix conflict with man-pages-1.56
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
@@ -66,11 +64,13 @@ rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 rm -f %{buildroot}/%{_lib}/libattr.{a,la,so}
 mkdir -p %{buildroot}%{_libdir}
 ln -sf /%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
+mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
 chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 
 %find_lang %{name}
 
 %files -f %{name}.lang
+%config %{_sysconfdir}/xattr.conf
 %{_bindir}/*
 %{_mandir}/man1/*
 
@@ -81,6 +81,6 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 %doc README
 %{_libdir}/libattr.so
 %{_mandir}/man3/*
-%{_mandir}/man5/*
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*
+%{_libdir}/pkgconfig/*.pc

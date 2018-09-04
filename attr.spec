@@ -65,7 +65,9 @@ rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 # TODO: finish up spec-helper script to automatically deal with
 rm -f %{buildroot}/%{_lib}/libattr.{a,la,so}
 mkdir -p %{buildroot}%{_libdir}
-ln -sf /%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
+cd %{buildroot}%{_libdir}
+ln -sf ../../%{_lib}/libattr.so.%{major}.* libattr.so
+cd -
 mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
 chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 

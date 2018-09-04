@@ -5,13 +5,14 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.48
-Release:	1
+Release:	2
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 Source2:	attr.check
+Patch0:		attr-2.4.48-test-perl-5.26.patch
 BuildRequires:	gettext-devel
 
 %description
@@ -43,11 +44,11 @@ recommended interface, but an SGI IRIX compatibility interface
 is also provided.
 
 %prep
-%setup -q
+%autosetup -p1
 chmod +rw -R .
 
 %build
-LDFLAGS="%{ldflags} -fuse-ld=bfd " %configure \
+LDFLAGS="%{ldflags} -fuse-ld=bfd" %configure \
 	OPTIMIZER="%{optflags}" \
 	--disable-static \
 	--libdir=/%{_lib}
@@ -61,7 +62,7 @@ LDFLAGS="%{ldflags} -fuse-ld=bfd " %configure \
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
-# TODO: finish up spec-helper script ot automatically deal with
+# TODO: finish up spec-helper script to automatically deal with
 rm -f %{buildroot}/%{_lib}/libattr.{a,la,so}
 mkdir -p %{buildroot}%{_libdir}
 ln -sf /%{_lib}/libattr.so.%{major}.* %{buildroot}%{_libdir}/libattr.so
@@ -72,6 +73,7 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 
 %check
 bash %{SOURCE2} %{buildroot}/%{_lib}/libattr.so.%{major}
+make check
 
 %files -f %{name}.lang
 %config %{_sysconfdir}/xattr.conf

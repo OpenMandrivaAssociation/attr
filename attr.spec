@@ -1,11 +1,12 @@
 %define major 1
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
+%define	_disable_lto %{nil}
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.48
-Release:	1
+Release:	2
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr

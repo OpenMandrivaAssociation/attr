@@ -1,7 +1,9 @@
 %define major 1
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
-%define	_disable_lto %{nil}
+# https://bugs.gentoo.org/644048
+%global ldflags %(echo %{ldflags} -fuse-ld=bfd |sed -e 's,-flto,,g')
+%global optflags %(echo %{optflags} -fuse-ld=bfd |sed -e 's,-flto,,g')
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
@@ -49,9 +51,7 @@ is also provided.
 chmod +rw -R .
 
 %build
-LDFLAGS="%{ldflags} -fuse-ld=bfd" %configure \
-	OPTIMIZER="%{optflags}" \
-	--disable-static \
+%configure \
 	--libdir=/%{_lib}
 
 %make

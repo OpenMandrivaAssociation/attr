@@ -11,6 +11,7 @@ Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
 Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
+Source2:	attr.check
 BuildRequires:	gettext-devel
 
 %description
@@ -68,6 +69,9 @@ mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
 chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 
 %find_lang %{name}
+
+%check
+bash %{SOURCE2} %{buildroot}/%{_lib}/libattr.so.%{major}
 
 %files -f %{name}.lang
 %config %{_sysconfdir}/xattr.conf

@@ -47,7 +47,7 @@ is also provided.
 chmod +rw -R .
 
 %build
-%configure \
+LDFLAGS="%{ldflags} -fuse-ld=bfd " %configure \
 	OPTIMIZER="%{optflags}" \
 	--disable-static \
 	--libdir=/%{_lib}

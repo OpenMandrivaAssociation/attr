@@ -8,7 +8,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.48
-Release:	3
+Release:	4
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
@@ -16,6 +16,7 @@ Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}
 Source1:	%{name}.rpmlintrc
 Source2:	attr.check
 Patch0:		attr-2.4.48-test-perl-5.26.patch
+Patch1:		0002-attr-2.4.48-switch-back-to-syscall.patch
 BuildRequires:	gettext-devel
 
 %description
@@ -24,15 +25,15 @@ objects, in particular getfattr(1) and setfattr(1).
 An attr(1) command is also provided which is largely compatible
 with the SGI IRIX tool of the same name.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Main library for libattr
 Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains the library needed to run programs dynamically
 linked with libattr.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Extended attribute static libraries and headers
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
@@ -52,9 +53,9 @@ chmod +rw -R .
 
 %build
 %configure \
-	--libdir=/%{_lib}
+    --libdir=/%{_lib}
 
-%make
+%make_build
 
 %install
 %make_install DESTDIR=%{buildroot}
@@ -75,8 +76,13 @@ chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
 %find_lang %{name}
 
 %check
-bash %{SOURCE2} %{buildroot}/%{_lib}/libattr.so.%{major}
-make check
+/bin/sh %{SOURCE2} %{buildroot}/%{_lib}/libattr.so.%{major}
+
+if ./setfattr -n user.name -v value .; then
+    make check || exit $?
+else
+    printf '%s\n' '*** xattrs are probably not supported by the file system, the test-suite will NOT run ***'
+fi
 
 %files -f %{name}.lang
 %config %{_sysconfdir}/xattr.conf

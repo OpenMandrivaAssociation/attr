@@ -2,13 +2,12 @@
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
 # https://bugs.gentoo.org/644048
-%global ldflags %(echo %{ldflags} -fuse-ld=bfd |sed -e 's,-flto,,g')
-%global optflags %(echo %{optflags} -fuse-ld=bfd |sed -e 's,-flto,,g')
+%define _disable_lto 1
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.48
-Release:	4
+Release:	5
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr

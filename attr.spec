@@ -1,8 +1,12 @@
 %define major 1
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
+
 # https://bugs.gentoo.org/644048
 %define _disable_lto 1
+%global optflags %{optflags} -fuse-ld=bfd
+%global ldflags %{ldflags} -fuse-ld=bfd
+#
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
@@ -39,7 +43,7 @@ Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 %rename		%{_lib}attr1-devel
 
-%description -n	%{devname}
+%description -n %{devname}
 This package contains the libraries and header files needed to
 develop programs which make use of extended attributes.
 For Linux programs, the documented system call API is the

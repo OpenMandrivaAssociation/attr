@@ -1,6 +1,16 @@
+# attr is used by libcap, libcap is used by systemd,
+# libsystemd is used by wine
+%ifarch %{x86_64}
+%bcond_without compat32
+%else
+%bcond_with compat32
+%endif
+
 %define major 1
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
+%define lib32name lib%{name}%{major}
+%define dev32name lib%{name}-devel
 
 # https://bugs.gentoo.org/644048
 %define _disable_lto 1
@@ -11,7 +21,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.4.48
-Release:	5
+Release:	6
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
@@ -50,18 +60,57 @@ For Linux programs, the documented system call API is the
 recommended interface, but an SGI IRIX compatibility interface
 is also provided.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	Main library for libattr (32-bit)
+Group:		System/Libraries
+
+%description -n %{lib32name}
+This package contains the library needed to run programs dynamically
+linked with libattr.
+
+%package -n %{dev32name}
+Summary:	Extended attribute static libraries and headers (32-bit)
+Group:		Development/C
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{devname} = %{EVRD}
+
+%description -n %{dev32name}
+This package contains the libraries and header files needed to
+develop programs which make use of extended attributes.
+For Linux programs, the documented system call API is the
+recommended interface, but an SGI IRIX compatibility interface
+is also provided.
+%endif
+
 %prep
 %autosetup -p1
 chmod +rw -R .
 
-%build
-%configure \
-    --libdir=/%{_lib}
+export CONFIGURE_TOP="$(pwd)"
+%if %{with compat32}
+mkdir build32
+cd build32
+%configure32
+cd ..
+%endif
 
-%make_build
+mkdir build
+cd build
+%configure --libdir=/%{_lib}
+cd ..
+
+%build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C build
 
 %install
-%make_install DESTDIR=%{buildroot}
+%if %{with compat32}
+%make_install -C build32 DESTDIR=%{buildroot}
+%endif
+%make_install -C build DESTDIR=%{buildroot}
 
 # fix conflict with man-pages-1.56
 rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
@@ -102,3 +151,12 @@ fi
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*
 %{_libdir}/pkgconfig/*.pc
+
+%if %{with compat32}
+%files -n %{lib32name}
+%{_prefix}/lib/libattr.so.%{major}*
+
+%files -n %{dev32name}
+%{_prefix}/lib/libattr.so
+%{_prefix}/lib/pkgconfig/*.pc
+%endif

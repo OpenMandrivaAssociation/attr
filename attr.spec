@@ -12,24 +12,18 @@
 %define lib32name lib%{name}%{major}
 %define dev32name lib%{name}-devel
 
-# https://bugs.gentoo.org/644048
-%define _disable_lto 1
-%global optflags %{optflags} -fuse-ld=bfd
-%global ldflags %{ldflags} -fuse-ld=bfd
-#
-
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
-Version:	2.4.48
-Release:	6
+Version:	2.5.1
+Release:	1
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
-Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.xz
 Source1:	%{name}.rpmlintrc
 Source2:	attr.check
-Patch0:		attr-2.4.48-test-perl-5.26.patch
-Patch1:		0002-attr-2.4.48-switch-back-to-syscall.patch
+# (tpg) https://bugs.gentoo.org/644048#c38
+Patch0:		attr-2.4.48-use-asm-symver.patch
 BuildRequires:	gettext-devel
 
 %description
@@ -86,6 +80,8 @@ is also provided.
 %prep
 %autosetup -p1
 chmod +rw -R .
+
+autoreconf -fiv
 
 export CONFIGURE_TOP="$(pwd)"
 %if %{with compat32}

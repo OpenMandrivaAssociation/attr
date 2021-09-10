@@ -15,7 +15,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.5.1
-Release:	1
+Release:	2
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
@@ -135,7 +135,7 @@ fi
 %files -f %{name}.lang
 %config %{_sysconfdir}/xattr.conf
 %{_bindir}/*
-%{_mandir}/man1/*
+%doc %{_mandir}/man1/*
 
 %files -n %{libname}
 /%{_lib}/libattr.so.%{major}*
@@ -143,7 +143,7 @@ fi
 %files -n %{devname}
 %doc README
 %{_libdir}/libattr.so
-%{_mandir}/man3/*
+%doc %{_mandir}/man3/*
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*
 %{_libdir}/pkgconfig/*.pc

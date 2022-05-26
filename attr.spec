@@ -15,7 +15,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.5.1
-Release:	2
+Release:	3
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
@@ -93,7 +93,7 @@ cd ..
 
 mkdir build
 cd build
-%configure --libdir=/%{_lib}
+%configure
 cd ..
 
 %build
@@ -113,18 +113,13 @@ rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 
 # Remove unpackaged symlinks
 # TODO: finish up spec-helper script to automatically deal with
-rm -f %{buildroot}/%{_lib}/libattr.{a,la,so}
-mkdir -p %{buildroot}%{_libdir}
-cd %{buildroot}%{_libdir}
-ln -sf ../../%{_lib}/libattr.so.%{major}.* libattr.so
-cd -
-mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
-chmod +x %{buildroot}/%{_lib}/libattr.so.%{major}.*
+rm -f %{buildroot}/%{_libdir}/libattr.{a,la}
+chmod +x %{buildroot}/%{_libdir}/libattr.so.%{major}.*
 
 %find_lang %{name}
 
 %check
-/bin/sh %{SOURCE2} %{buildroot}/%{_lib}/libattr.so.%{major}
+/bin/sh %{SOURCE2} %{buildroot}/%{_libdir}/libattr.so.%{major}
 
 if ./setfattr -n user.name -v value .; then
     make check || exit $?
@@ -138,7 +133,7 @@ fi
 %doc %{_mandir}/man1/*
 
 %files -n %{libname}
-/%{_lib}/libattr.so.%{major}*
+%{_libdir}/libattr.so.%{major}*
 
 %files -n %{devname}
 %doc README

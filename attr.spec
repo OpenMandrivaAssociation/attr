@@ -15,7 +15,7 @@
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.5.1
-Release:	3
+Release:	4
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr

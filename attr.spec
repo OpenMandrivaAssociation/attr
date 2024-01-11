@@ -7,15 +7,17 @@
 %endif
 
 %define major 1
-%define libname %mklibname %{name} %{major}
+%define oldlibname %mklibname %{name} 1
+%define libname %mklibname %{name}
 %define devname %mklibname -d %{name}
-%define lib32name lib%{name}%{major}
+%define oldlib32name lib%{name}1
+%define lib32name lib%{name}
 %define dev32name lib%{name}-devel
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
 Version:	2.5.1
-Release:	4
+Release:	5
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		http://savannah.nongnu.org/projects/attr
@@ -35,6 +37,7 @@ with the SGI IRIX tool of the same name.
 %package -n %{libname}
 Summary:	Main library for libattr
 Group:		System/Libraries
+%rename %{oldlibname}
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -58,6 +61,7 @@ is also provided.
 %package -n %{lib32name}
 Summary:	Main library for libattr (32-bit)
 Group:		System/Libraries
+%rename %{oldlib32name}
 
 %description -n %{lib32name}
 This package contains the library needed to run programs dynamically
@@ -116,8 +120,12 @@ rm -rf %{buildroot}{%{_mandir}/man2,%{_datadir}/doc}
 rm -f %{buildroot}/%{_libdir}/libattr.{a,la}
 chmod +x %{buildroot}/%{_libdir}/libattr.so.%{major}.*
 
+# Get rid of harmful -I/usr/include and -L/usr/lib64
+sed -i -e '/Cflags:/d' -e 's/-L\${libdir} //g' %{buildroot}%{_libdir}/pkgconfig/libattr.pc
+
 %find_lang %{name}
 
+%if ! %{cross_compiling}
 %check
 /bin/sh %{SOURCE2} %{buildroot}/%{_libdir}/libattr.so.%{major}
 
@@ -126,6 +134,7 @@ if ./setfattr -n user.name -v value .; then
 else
     printf '%s\n' '*** xattrs are probably not supported by the file system, the test-suite will NOT run ***'
 fi
+%endif
 
 %files -f %{name}.lang
 %config %{_sysconfdir}/xattr.conf

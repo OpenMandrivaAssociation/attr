@@ -20,7 +20,7 @@ Version:	2.5.1
 Release:	5
 License:	GPLv2
 Group:		System/Kernel and hardware
-Url:		http://savannah.nongnu.org/projects/attr
+Url:		https://savannah.nongnu.org/projects/attr
 Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.xz
 Source1:	%{name}.rpmlintrc
 Source2:	attr.check

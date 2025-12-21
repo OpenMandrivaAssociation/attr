@@ -26,6 +26,11 @@ Source1:	%{name}.rpmlintrc
 Source2:	attr.check
 # (tpg) https://bugs.gentoo.org/644048#c38
 Patch0:		attr-2.4.48-use-asm-symver.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gettext-devel
 
 %description

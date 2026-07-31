@@ -16,16 +16,16 @@
 
 Summary:	Utility for managing filesystem extended attributes
 Name:		attr
-Version:	2.5.1
-Release:	5
+Version:	2.6.0
+Release:	1
 License:	GPLv2
 Group:		System/Kernel and hardware
 Url:		https://savannah.nongnu.org/projects/attr
-Source0:	http://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.xz
+Source0:	https://download.savannah.nongnu.org/releases/%{name}/%{name}-%{version}.tar.xz
 Source1:	%{name}.rpmlintrc
 Source2:	attr.check
 # (tpg) https://bugs.gentoo.org/644048#c38
-Patch0:		attr-2.4.48-use-asm-symver.patch
+# dropped (no longer applies): Patch0:		attr-2.4.48-use-asm-symver.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool-base
